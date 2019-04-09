@@ -1,5 +1,18 @@
+.padding {
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
 .center {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+}
+
+.date {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding-top: 5%;
+    padding-bottom: 5%;
 }
