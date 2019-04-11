@@ -8,7 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const root = (
     <div className='wrapper'>
-        <h1>Mappening</h1>
+        <h1>Mappening Internal Site</h1>
         <Home />
     </div>
 );
