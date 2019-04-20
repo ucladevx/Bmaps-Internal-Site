@@ -11,8 +11,6 @@ export default class Home extends React.Component {
             description: '',
             place: '',
             organization: '',
-            start: '',
-            end: '',
             cover: '',
             category: '',
             startDate: new Date(),
@@ -26,7 +24,7 @@ export default class Home extends React.Component {
         });
     }
 
-    updateDate = name => (date) => {
+    updateDate = (name) => (date) => {
         if (name === 'start') {
             this.setState({
                 startDate: date,
@@ -38,8 +36,32 @@ export default class Home extends React.Component {
         }
     }
 
-    submit = () => {
+    validate = () => {
         console.log(this.state);
+        for (let key in this.state) {
+            if (this.state[key] === '') {
+                alert(`${key} cannot be empty!`);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    submit = async () => {
+        if (!this.validate()) {
+            return;
+        }
+
+        const res = await fetch('http://localhost:5000/api/v2/events/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(this.state)
+        });
+
+        const data = await res.json();
+        console.log(data);
     }
 
     render() {
@@ -91,7 +113,7 @@ export default class Home extends React.Component {
                             showTimeSelect
                             selected={startDate}
                             dateFormat='MMMM d, yyyy h:mm aa'
-                            onChange={this.updateDate('start')}
+                            onChange={() => this.updateDate('start')}
                             timeFormat='HH:mm'
                             id='startDate'
                         />
@@ -102,7 +124,7 @@ export default class Home extends React.Component {
                             showTimeSelect
                             selected={endDate}
                             dateFormat='MMMM d, yyyy h:mm aa'
-                            onChange={this.updateDate('end')}
+                            onChange={() => this.updateDate('end')}
                             timeFormat='HH:mm'
                             id='endDate'
                         />
