@@ -1,6 +1,7 @@
-import { Container, Row, Col, Input, Button, InputGroupAddon, InputGroup, Label } from 'reactstrap';
 import React from 'react';
+import { Container, Row, Col, Input, Button, InputGroupAddon, InputGroup, Label } from 'reactstrap';
 import DatePicker from 'react-datepicker';
+import Dropdown from '../components/DropdownMenu';
 import './style.css';
 
 export default class Home extends React.Component {
@@ -12,9 +13,9 @@ export default class Home extends React.Component {
             place: '',
             organization: '',
             cover: '',
-            category: '',
             startDate: new Date(),
             endDate: new Date(),
+            categories: [],
         };
     }
 
@@ -24,25 +25,35 @@ export default class Home extends React.Component {
         });
     }
 
-    updateDate = (name) => (date) => {
-        if (name === 'start') {
-            this.setState({
-                startDate: date,
-            });
-        } else {
-            this.setState({
-                endDate: date,
-            });
-        }
+    updateChecks = (newCategories) => {
+        this.setState({
+            categories: newCategories
+        });
+    }
+
+    updateStartDate = (date) => {
+        this.setState({
+            startDate: date
+        });
+    }
+
+    updateEndDate = (date) => {
+        this.setState({
+            endDate: date
+        });
     }
 
     validate = () => {
-        console.log(this.state);
+        console.log(this.state.startDate);
         for (let key in this.state) {
             if (this.state[key] === '') {
                 alert(`${key} cannot be empty!`);
                 return false;
             }
+        }
+        if (this.state.endDate < this.state.startDate) {
+            alert('Start date cannot be after end date!');
+            return false;
         }
         return true;
     }
@@ -52,12 +63,24 @@ export default class Home extends React.Component {
             return;
         }
 
+        let categoryNames = [];
+        for (let i = 0; i < this.state.categories.length; i++) {
+            if (this.state.categories[i].checked) {
+                console.log('checked!');
+                categoryNames.push(this.state.categories[i].name);
+            }
+        }
+
+        let requestArgs = Object.assign({}, this.state);
+        requestArgs.categories = categoryNames;
+        console.log(this.state.startDate);
+
         const res = await fetch('http://localhost:5000/api/v2/events/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(this.state)
+            body: JSON.stringify(requestArgs)
         });
 
         const data = await res.json();
@@ -91,20 +114,19 @@ export default class Home extends React.Component {
                         <InputGroup className='padding'>
                             <InputGroupAddon addonType='prepend'>Place</InputGroupAddon>
                             <Input type='text' name='place' onChange={this.onInputChange} />
-                        
-                        </InputGroup>
-
-                        <InputGroup className='padding'>
-                            <InputGroupAddon addonType='prepend'>Category</InputGroupAddon>
-                            <Input type='text' name='category' onChange={this.onInputChange} />
                         </InputGroup>
 
                         <InputGroup className='padding'>
                             <InputGroupAddon addonType='prepend'>Organization</InputGroupAddon>
                             <Input type='organization' name='organization' onChange={this.onInputChange} />
                         </InputGroup>
+
                     </Col>
                 </Row>
+                <div className='center'>
+                    <h2>Categories</h2>
+                    <Dropdown options={['TECH', 'SPORTS', 'MUSIC', 'FOOD', 'ART', 'CONFERENCE', 'NETWORKING', 'WELLNESS']} onChange={this.updateChecks} />
+                </div>
                 <br />
                 <div className='date'>
                     <div className='date-item'>
@@ -112,8 +134,8 @@ export default class Home extends React.Component {
                         <DatePicker
                             showTimeSelect
                             selected={startDate}
-                            dateFormat='MMMM d, yyyy h:mm aa'
-                            onChange={() => this.updateDate('start')}
+                            dateFormat='yyyy MMMM d h:mm aa'
+                            onChange={this.updateStartDate}
                             timeFormat='HH:mm'
                             id='startDate'
                         />
@@ -123,8 +145,8 @@ export default class Home extends React.Component {
                         <DatePicker
                             showTimeSelect
                             selected={endDate}
-                            dateFormat='MMMM d, yyyy h:mm aa'
-                            onChange={() => this.updateDate('end')}
+                            dateFormat='yyyy MMMM d h:mm aa'
+                            onChange={this.updateEndDate}
                             timeFormat='HH:mm'
                             id='endDate'
                         />
