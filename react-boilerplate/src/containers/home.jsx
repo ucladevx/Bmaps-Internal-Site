@@ -13,9 +13,12 @@ export default class Home extends React.Component {
             place: '',
             organization: '',
             cover: '',
+            street: '',
             startDate: new Date(),
             endDate: new Date(),
             categories: [],
+            latitude: 0,
+            longitude: 0,
         };
     }
 
@@ -44,7 +47,6 @@ export default class Home extends React.Component {
     }
 
     validate = () => {
-        console.log(this.state.startDate);
         for (let key in this.state) {
             if (this.state[key] === '') {
                 alert(`${key} cannot be empty!`);
@@ -66,28 +68,36 @@ export default class Home extends React.Component {
         let categoryNames = [];
         for (let i = 0; i < this.state.categories.length; i++) {
             if (this.state.categories[i].checked) {
-                console.log('checked!');
                 categoryNames.push(this.state.categories[i].name);
             }
         }
 
         let requestArgs = Object.assign({}, this.state);
         requestArgs.categories = categoryNames;
-        console.log(this.state.startDate);
 
-        const res = await fetch('http://localhost:5000/api/v2/events/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestArgs)
-        });
+        const API_URL = 'api.mappening.io:5000/api/v2/events/add' 
+        try {
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestArgs)
+            });
+            const data = await res.json();
+            if (data['error']) {
+                alert(data['error'])
+            }
+            console.log(data);
+        } catch (e) {
+            console.log(e);
+        }
 
-        const data = await res.json();
-        console.log(data);
     }
 
     render() {
+        let sortedCategories = ['CAUSE', 'MUSIC', 'FOOD', 'ART', 'NETWORKING', 'WELLNESS', 'MEETUP', 'SPORTS', 'GARDENING',  
+            'COMEDY PERFORMANCE', 'CONFERENCE', 'FILM', 'THEATER', 'TECH', 'RELIGION', 'PARTY', 'DANCE'].sort();
         const { startDate, endDate } = this.state;
         return (
             <Container>
@@ -100,17 +110,17 @@ export default class Home extends React.Component {
 
                         <InputGroup className='padding'>
                             <InputGroupAddon addonType='prepend'>Description</InputGroupAddon>
-                            <Input type='textarea' bssize='lg' style={{ height: '200px' }} name='description' onChange={this.onInputChange} />
+                            <Input type='textarea' bssize='lg' style={{ height: '222px' }} name='description' onChange={this.onInputChange} />
+                        </InputGroup>
+
+                        <InputGroup className='padding'>
+                            <InputGroupAddon addonType='prepend'>Cover Image</InputGroupAddon>
+                            <Input type='text' name='cover' onChange={this.onInputChange} />
                         </InputGroup>
 
                     </Col>
 
                     <Col md='6' className='center'>
-                        <InputGroup className='padding'>
-                            <InputGroupAddon addonType='prepend'>Cover Image</InputGroupAddon>
-                            <Input type='text' name='cover' onChange={this.onInputChange} />
-                        </InputGroup>
-                        
                         <InputGroup className='padding'>
                             <InputGroupAddon addonType='prepend'>Place</InputGroupAddon>
                             <Input type='text' name='place' onChange={this.onInputChange} />
@@ -118,14 +128,29 @@ export default class Home extends React.Component {
 
                         <InputGroup className='padding'>
                             <InputGroupAddon addonType='prepend'>Organization</InputGroupAddon>
-                            <Input type='organization' name='organization' onChange={this.onInputChange} />
+                            <Input type='text' name='organization' onChange={this.onInputChange} />
+                        </InputGroup>
+
+                        <InputGroup className='padding'>
+                            <InputGroupAddon addonType='prepend'>Street Address</InputGroupAddon>
+                            <Input type='text' name='street' onChange={this.onInputChange} />
+                        </InputGroup>
+
+                        <InputGroup className='padding'>
+                            <InputGroupAddon addonType='prepend'>Latitude</InputGroupAddon>
+                            <Input type='text' name='latitude' onChange={this.onInputChange} />
+                        </InputGroup>
+
+                        <InputGroup className='padding'>
+                            <InputGroupAddon addonType='prepend'>Longitude</InputGroupAddon>
+                            <Input type='text' name='longitude' onChange={this.onInputChange} />
                         </InputGroup>
 
                     </Col>
                 </Row>
                 <div className='center'>
                     <h2>Categories</h2>
-                    <Dropdown options={['TECH', 'SPORTS', 'MUSIC', 'FOOD', 'ART', 'CONFERENCE', 'NETWORKING', 'WELLNESS']} onChange={this.updateChecks} />
+                    <Dropdown options={sortedCategories} onChange={this.updateChecks} />
                 </div>
                 <br />
                 <div className='date'>
