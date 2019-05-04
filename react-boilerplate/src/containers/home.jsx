@@ -75,7 +75,7 @@ export default class Home extends React.Component {
         let requestArgs = Object.assign({}, this.state);
         requestArgs.categories = categoryNames;
 
-        const API_URL = 'api.mappening.io:5000/api/v2/events/add' 
+        const API_URL = 'http://localhost:5000/api/v2/events/add' 
         try {
             const res = await fetch(API_URL, {
                 method: 'POST',
@@ -86,7 +86,9 @@ export default class Home extends React.Component {
             });
             const data = await res.json();
             if (data['error']) {
-                alert(data['error'])
+                alert(data['error']);
+            } else {
+                alert(`Event with id ${data['id']} added successfully!`);
             }
             console.log(data);
         } catch (e) {
