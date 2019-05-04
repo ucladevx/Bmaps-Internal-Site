@@ -32,3 +32,10 @@ By default, the boilerplate uses webpack to generate static files
 npm run build
 ```
 The static files will be stored in the /dist directory
+
+### Deploying
+1. First build with npm run build
+2. Then cd into dist
+3. Then run surge
+    It will ask for username and password maybe, message hakan if it does and he will tell you them
+    website is mappening-internal-site.surge.sh
