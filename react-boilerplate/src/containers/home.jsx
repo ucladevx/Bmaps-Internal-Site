@@ -19,6 +19,7 @@ export default class Home extends React.Component {
             categories: [],
             latitude: 0,
             longitude: 0,
+            freeFood: false,
         };
     }
 
@@ -31,6 +32,12 @@ export default class Home extends React.Component {
     updateChecks = (newCategories) => {
         this.setState({
             categories: newCategories
+        });
+    }
+
+    updateFreeFood = (food) => {
+        this.setState({
+            freeFood: food[0].checked,
         });
     }
 
@@ -75,7 +82,7 @@ export default class Home extends React.Component {
         let requestArgs = Object.assign({}, this.state);
         requestArgs.categories = categoryNames;
 
-        const API_URL = 'http://api.mappening.io:5000/api/v2/events/add' 
+        const API_URL = 'http://localhost:5000/api/v2/events/add' 
         try {
             const res = await fetch(API_URL, {
                 method: 'POST',
@@ -92,6 +99,7 @@ export default class Home extends React.Component {
             }
             console.log(data);
         } catch (e) {
+            console.log('caught api res error');
             console.log(e);
         }
 
@@ -147,6 +155,7 @@ export default class Home extends React.Component {
                             <InputGroupAddon addonType='prepend'>Longitude</InputGroupAddon>
                             <Input type='text' name='longitude' onChange={this.onInputChange} />
                         </InputGroup>
+                        
 
                     </Col>
                 </Row>
@@ -155,6 +164,7 @@ export default class Home extends React.Component {
                     <Dropdown options={sortedCategories} onChange={this.updateChecks} />
                 </div>
                 <br />
+                <Dropdown options={['FREE FOOD']} onChange={this.updateFreeFood} />
                 <div className='date'>
                     <div className='date-item'>
                         <Label for='startDate'>Start Date</Label>
