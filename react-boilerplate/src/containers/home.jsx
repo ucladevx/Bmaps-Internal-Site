@@ -107,7 +107,7 @@ export default class Home extends React.Component {
 
     render() {
         let sortedCategories = ['CAUSE', 'MUSIC', 'FOOD', 'ART', 'NETWORKING', 'WELLNESS', 'MEETUP', 'SPORTS', 'GARDENING',  
-            'COMEDY PERFORMANCE', 'CONFERENCE', 'FILM', 'THEATER', 'TECH', 'RELIGION', 'PARTY', 'DANCE'].sort();
+            'COMEDY PERFORMANCE', 'FILM', 'THEATER', 'TECH', 'RELIGION', 'PARTY', 'DANCE'].sort();
         const { startDate, endDate } = this.state;
         return (
             <Container>
