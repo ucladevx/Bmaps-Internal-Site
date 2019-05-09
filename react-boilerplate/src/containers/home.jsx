@@ -95,11 +95,12 @@ export default class Home extends React.Component {
             if (data.error) {
                 alert(data.error);
             } else {
-                alert(`Event with id ${data.id} added successfully!`);
+                if (!alert(`Event with id ${data.id} added successfully!`)) {
+                    window.location.reload();
+                }
             }
             console.log(data);
         } catch (e) {
-            console.log('caught api res error');
             console.log(e);
         }
 
