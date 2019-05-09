@@ -55,7 +55,7 @@ export default class Home extends React.Component {
 
     validate = () => {
         for (let key in this.state) {
-            if (this.state[key] === '') {
+            if (this.state[key] === '' && this.state[key] != 'cover') {
                 alert(`${key} cannot be empty!`);
                 return false;
             }
@@ -82,20 +82,20 @@ export default class Home extends React.Component {
         let requestArgs = Object.assign({}, this.state);
         requestArgs.categories = categoryNames;
 
-        const API_URL = 'http://localhost:5000/api/v2/events/add' 
+        const API_URL = 'http://localhost:5000/api/v2/events/add';
         try {
             const res = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(requestArgs)
+                body: JSON.stringify(requestArgs),
             });
             const data = await res.json();
-            if (data['error']) {
-                alert(data['error']);
+            if (data.error) {
+                alert(data.error);
             } else {
-                alert(`Event with id ${data['id']} added successfully!`);
+                alert(`Event with id ${data.id} added successfully!`);
             }
             console.log(data);
         } catch (e) {
