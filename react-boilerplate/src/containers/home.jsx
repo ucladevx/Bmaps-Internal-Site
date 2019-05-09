@@ -55,7 +55,7 @@ export default class Home extends React.Component {
 
     validate = () => {
         for (let key in this.state) {
-            if (this.state[key] === '' && this.state[key] != 'cover') {
+            if (this.state[key] === '' && key != 'cover') {
                 alert(`${key} cannot be empty!`);
                 return false;
             }
