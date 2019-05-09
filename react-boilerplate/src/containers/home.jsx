@@ -107,7 +107,7 @@ export default class Home extends React.Component {
 
     render() {
         let sortedCategories = ['CAUSE', 'MUSIC', 'FOOD', 'ART', 'NETWORKING', 'WELLNESS', 'MEETUP', 'SPORTS', 'GARDENING',  
-            'COMEDY PERFORMANCE', 'FILM', 'THEATER', 'TECH', 'RELIGION', 'PARTY', 'DANCE'].sort();
+            'COMEDY PERFORMANCE', 'FILM', 'THEATER', 'TECH', 'RELIGION', 'PARTY', 'DANCE', 'CONFERENCE'].sort();
         const { startDate, endDate } = this.state;
         return (
             <Container>
@@ -164,7 +164,10 @@ export default class Home extends React.Component {
                     <Dropdown options={sortedCategories} onChange={this.updateChecks} />
                 </div>
                 <br />
-                <Dropdown options={['FREE FOOD']} onChange={this.updateFreeFood} />
+                <div className='center'>
+                    <h2>Filters</h2>
+                    <Dropdown options={['FREE FOOD']} onChange={this.updateFreeFood} />
+                </div>
                 <div className='date'>
                     <div className='date-item'>
                         <Label for='startDate'>Start Date</Label>
