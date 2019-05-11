@@ -152,12 +152,12 @@ export default class Home extends React.Component {
                         </InputGroup>
 
                         <InputGroup className='padding'>
-                            <InputGroupAddon addonType='prepend'>Latitude</InputGroupAddon>
+                            <InputGroupAddon addonType='prepend'>Latitude (Between 34.056 and 34.079)</InputGroupAddon>
                             <Input type='text' name='latitude' onChange={this.onInputChange} />
                         </InputGroup>
 
                         <InputGroup className='padding'>
-                            <InputGroupAddon addonType='prepend'>Longitude</InputGroupAddon>
+                            <InputGroupAddon addonType='prepend'>Longitude (Between -118.46 and -118.428)</InputGroupAddon>
                             <Input type='text' name='longitude' onChange={this.onInputChange} />
                         </InputGroup>
                         
