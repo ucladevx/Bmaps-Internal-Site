@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Input, Button, InputGroupAddon, InputGroup, Label } from 'reactstrap';
+import { API_URL } from '../Config';
 import DatePicker from 'react-datepicker';
 import Dropdown from '../components/DropdownMenu';
 import './style.css';
@@ -21,6 +22,10 @@ export default class Home extends React.Component {
             longitude: 0,
             freeFood: false,
         };
+    }
+
+    componentDidMount() {
+
     }
 
     onInputChange = (e) => {
@@ -82,7 +87,6 @@ export default class Home extends React.Component {
         let requestArgs = Object.assign({}, this.state);
         requestArgs.categories = categoryNames;
 
-        const API_URL = 'http://api.mappening.io:5000/api/v2/events/add';
         try {
             const res = await fetch(API_URL, {
                 method: 'POST',
